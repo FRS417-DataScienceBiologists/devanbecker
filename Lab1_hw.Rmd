@@ -48,9 +48,7 @@ total_roulette
 ```
 
 ```{r}
-total_week <- blackjack-roulette
-total_week
-total_week <- sum(blackjack-roulette)
+total_week <- c(blackjack+roulette)
 total_week
 ```
 
