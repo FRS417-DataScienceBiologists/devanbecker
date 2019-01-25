@@ -1,0 +1,64 @@
+---
+title: "Lab1_hw"
+output: html_document
+---
+
+```{r}
+library("tidyverse")
+```
+
+```{r}
+getwd()
+```
+
+```{r}
+5 - 3 * 2
+```
+
+```{r}
+8 / 2 ** 2
+```
+
+```{r}
+(5-3)*2
+```
+
+```{r}
+(8/2)*2*2
+```
+
+```{r}
+blackjack <- c(140, -20, 70, -120, 240)
+roulette <- c(60, 50, 120, -300, 10)
+days <- c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday")
+```
+
+```{r}
+names(blackjack) <- days
+names(roulette) <- days
+```
+
+```{r}
+total_blackjack <- sum(blackjack)
+total_blackjack
+```
+```{r}
+total_roulette <- sum(roulette)
+total_roulette
+```
+
+```{r}
+total_week <- blackjack-roulette
+total_week
+total_week <- sum(blackjack-roulette)
+total_week
+```
+
+```{r}
+if(total_week > 0) {print("play blackjack")}
+if(total_week < 0) {print("play roulette")}
+```
+
+
+
+
