@@ -1,0 +1,63 @@
+---
+title: "HW 2"
+author: "Devan Becker"
+date: "1/31/2019"
+output: 
+  html_document: 
+    keep_md: yes
+---
+```{r}
+library("tidyverse")
+```
+```{r}
+msleep
+```
+```{r}
+?msleep
+```
+```{r}
+dim(msleep)
+```
+
+```{r}
+summary(msleep)
+```
+
+```{r}
+msleep %>% 
+  select(name, genus, bodywt)
+```
+
+```{r}
+mammals_small <- msleep %>% 
+  select(bodywt, sleep_total) %>% 
+  filter(bodywt<=1)
+```
+```{r}
+mammals_small
+```
+```{r}
+mammals_large <- msleep %>% 
+  select(bodywt, sleep_total) %>% 
+  filter(bodywt>=200)
+```
+```{r}
+mammals_large
+```
+
+```{r}
+mean(mammals_large$sleep_total)
+```
+
+```{r}
+mean(mammals_small$sleep_total)
+```
+```{r}
+if(mean(mammals_large$sleep_total) > mean(mammals_small$sleep_total)){print("Large mammals sleep more on average.")} else if(mean(mammals_large$sleep_total) < mean(mammals_small$sleep_total)){print("Small mammals sleep more on average.")} else if(mean(mammals_large$sleep_total) == mean(mammals_small$sleep_total)){print("Small and large mammals sleep the same amount on average.")}
+```
+
+```{r}
+msleep %>% 
+  select(name, genus, order, sleep_total) %>% 
+  filter(sleep_total>=18)
+```
