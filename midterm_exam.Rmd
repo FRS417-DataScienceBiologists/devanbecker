@@ -1,5 +1,5 @@
 ---
-title: "Devan Becker"
+title: "Midterm Exam"
 date: "Winter 2019"
 output:
   html_document:
@@ -26,16 +26,14 @@ colleges <-
   readr::read_csv("ca_college_data.csv", na = c(""," ", "NA","#N/A", "-999"))
 ```
 
-
 3. Use your preferred function to have a look at the data and get an idea of its structure.
 ```{r}
 glimpse(colleges)
 ```
 
-
 4. What are the column names?
 ```{r}
-names(colleges)
+colnames(colleges)
 ```
 
 
@@ -44,60 +42,72 @@ names(colleges)
 colleges %>% 
   summarize(number_nas= sum(is.na(colleges)))
 ```
-
 ```{r}
 colleges %>% 
-  purrr::map_df(~ sum(is.na(.)))
+  purrr::map_df(~ sum(is.na(.))) %>% 
+  tidyr::gather(key="variables", value="num_nas") %>% 
+  arrange(desc(num_nas))
 ```
 
 
 6. Which cities in California have the highest number of colleges?
 ```{r}
 colleges %>% 
-  group_by(CITY) %>% 
-  summarise(total=n())
+  select(CITY, INSTNM) %>% 
+  count(CITY) %>% 
+  arrange(desc(n))
 ```
 
 
 7. The column `COSTT4_A` is the annual cost of each institution. Which city has the highest cost?
 ```{r}
-colleges %>%
-  select(CITY, COSTT4_A) %>% 
-  arrange(desc(COSTT4_A))
+colleges %>% 
+  group_by(CITY) %>% 
+  summarize(mean_cost_yr=mean(COSTT4_A, na.rm=TRUE), total=n()) %>% 
+  arrange(desc(mean_cost_yr))
 ```
 
 
 8. The column `ADM_RATE` is the admissions rate by college and `C150_4_POOLED` is the four-year completion rate. Use a scatterplot to show the relationship between these two variables. What does this mean?
 ```{r}
 colleges %>% 
-  ggplot(aes(x = C150_4_POOLED, y = ADM_RATE)) +
-  geom_jitter()
+  ggplot(aes(ADM_RATE, C150_4_POOLED))+
+  geom_point()+
+  geom_smooth(method=lm, se=TRUE)
 ```
 
 
 9. The column titled `INSTNM` is the institution name. We are only interested in the University of California colleges. Run the code below and look at the output. Are all of the columns tidy? Why or why not?
 ```{r}
+univ_calif <- 
   colleges %>% 
-  filter_all(any_vars(str_detect(.,pattern = "University of Califronia")))
+  filter_all(any_vars(str_detect(., pattern = "University of California")))
+univ_calif
 ```
-
+##These data are not tidy if all UCs are considered one university.
 
 10. Use `separate()` to separate institution name into two new columns "UNIV" and "CAMPUS".
 ```{r}
-
+university_ca <- 
+  univ_calif %>% 
+  separate(INSTNM, c("UNIV", "CAMPUS"), sep="-")
+university_ca
 ```
 
 
 11. As a final step, remove `Hastings College of Law` and `UC San Francisco` and store the final data frame as a new object `univ_calif_final`.
 ```{r}
-
+univ_calif_final <- 
+  university_ca %>% 
+  filter(CAMPUS !="Hastings College of Law", CAMPUS !="San Francisco")
+univ_calif_final
 ```
 
 
 12. The column `ADM_RATE` is the admissions rate by campus. Which UC has the lowest and highest admissions rates? Please use a barplot.
 ```{r}
-
+univ_calif_final %>% 
+  ggplot(aes(CAMPUS, ADM_RATE)) +
+  geom_bar(stat="identity")
 ```
-
-
-## Knit Your Output and Post to [GitHub](https://github.com/FRS417-DataScienceBiologists)
+##UC Berkeley has the lowest and UC Riverside has the highest admission rate.

@@ -1,5 +1,5 @@
 ---
-title: "Devan Becker"
+title: "Midterm Exam"
 date: "Winter 2019"
 output:
   html_document:
@@ -22,7 +22,7 @@ library(tidyverse)
 ```
 
 ```
-## ── Attaching packages ─────────────────────────────────────── tidyverse 1.2.1 ──
+## ── Attaching packages ──────────────────────────────────────────────────────────────────────────────── tidyverse 1.2.1 ──
 ```
 
 ```
@@ -33,7 +33,7 @@ library(tidyverse)
 ```
 
 ```
-## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+## ── Conflicts ─────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
 ## ✖ dplyr::filter() masks stats::filter()
 ## ✖ dplyr::lag()    masks stats::lag()
 ```
@@ -61,7 +61,6 @@ colleges <-
 ## )
 ```
 
-
 3. Use your preferred function to have a look at the data and get an idea of its structure.
 
 ```r
@@ -83,11 +82,10 @@ glimpse(colleges)
 ## $ PFTFTUG1_EF   <dbl> 0.3546, 0.5413, 0.3567, 0.3824, 0.2753, 0.4286, 0.…
 ```
 
-
 4. What are the column names?
 
 ```r
-names(colleges)
+colnames(colleges)
 ```
 
 ```
@@ -111,18 +109,27 @@ colleges %>%
 ## 1        949
 ```
 
-
 ```r
 colleges %>% 
-  purrr::map_df(~ sum(is.na(.)))
+  purrr::map_df(~ sum(is.na(.))) %>% 
+  tidyr::gather(key="variables", value="num_nas") %>% 
+  arrange(desc(num_nas))
 ```
 
 ```
-## # A tibble: 1 x 10
-##   INSTNM  CITY STABBR   ZIP ADM_RATE SAT_AVG PCIP26 COSTT4_A C150_4_POOLED
-##    <int> <int>  <int> <int>    <int>   <int>  <int>    <int>         <int>
-## 1      0     0      0     0      240     276     35      124           221
-## # … with 1 more variable: PFTFTUG1_EF <int>
+## # A tibble: 10 x 2
+##    variables     num_nas
+##    <chr>           <int>
+##  1 SAT_AVG           276
+##  2 ADM_RATE          240
+##  3 C150_4_POOLED     221
+##  4 COSTT4_A          124
+##  5 PFTFTUG1_EF        53
+##  6 PCIP26             35
+##  7 INSTNM              0
+##  8 CITY                0
+##  9 STABBR              0
+## 10 ZIP                 0
 ```
 
 
@@ -130,24 +137,25 @@ colleges %>%
 
 ```r
 colleges %>% 
-  group_by(CITY) %>% 
-  summarise(total=n())
+  select(CITY, INSTNM) %>% 
+  count(CITY) %>% 
+  arrange(desc(n))
 ```
 
 ```
 ## # A tibble: 161 x 2
-##    CITY        total
-##    <chr>       <int>
-##  1 Alameda         3
-##  2 Anaheim         4
-##  3 Angwin          1
-##  4 Aptos           1
-##  5 Arcata          1
-##  6 Atherton        1
-##  7 Azusa           1
-##  8 Bakersfield     3
-##  9 Barstow         1
-## 10 Belmont         1
+##    CITY              n
+##    <chr>         <int>
+##  1 Los Angeles      24
+##  2 San Diego        18
+##  3 San Francisco    15
+##  4 Sacramento       10
+##  5 Berkeley          9
+##  6 Oakland           9
+##  7 Claremont         7
+##  8 Pasadena          6
+##  9 Fresno            5
+## 10 Irvine            5
 ## # … with 151 more rows
 ```
 
@@ -155,26 +163,27 @@ colleges %>%
 7. The column `COSTT4_A` is the annual cost of each institution. Which city has the highest cost?
 
 ```r
-colleges %>%
-  select(CITY, COSTT4_A) %>% 
-  arrange(desc(COSTT4_A))
+colleges %>% 
+  group_by(CITY) %>% 
+  summarize(mean_cost_yr=mean(COSTT4_A, na.rm=TRUE), total=n()) %>% 
+  arrange(desc(mean_cost_yr))
 ```
 
 ```
-## # A tibble: 341 x 2
-##    CITY          COSTT4_A
-##    <chr>            <dbl>
-##  1 Claremont        69355
-##  2 Los Angeles      67225
-##  3 Los Angeles      67064
-##  4 Los Angeles      67046
-##  5 Claremont        66325
-##  6 Malibu           66152
-##  7 Claremont        66060
-##  8 Claremont        65880
-##  9 San Francisco    65453
-## 10 Claremont        64870
-## # … with 331 more rows
+## # A tibble: 161 x 3
+##    CITY                mean_cost_yr total
+##    <chr>                      <dbl> <int>
+##  1 Claremont                  66498     7
+##  2 Malibu                     66152     1
+##  3 Valencia                   64686     1
+##  4 Orange                     64501     3
+##  5 Redlands                   61542     1
+##  6 Moraga                     61095     1
+##  7 Atherton                   56035     1
+##  8 Thousand Oaks              54373     1
+##  9 Rancho Palos Verdes        50758     1
+## 10 La Verne                   50603     1
+## # … with 151 more rows
 ```
 
 
@@ -182,8 +191,13 @@ colleges %>%
 
 ```r
 colleges %>% 
-  ggplot(aes(x = C150_4_POOLED, y = ADM_RATE)) +
-  geom_jitter()
+  ggplot(aes(ADM_RATE, C150_4_POOLED))+
+  geom_point()+
+  geom_smooth(method=lm, se=TRUE)
+```
+
+```
+## Warning: Removed 251 rows containing non-finite values (stat_smooth).
 ```
 
 ```
@@ -196,28 +210,89 @@ colleges %>%
 9. The column titled `INSTNM` is the institution name. We are only interested in the University of California colleges. Run the code below and look at the output. Are all of the columns tidy? Why or why not?
 
 ```r
+univ_calif <- 
   colleges %>% 
-  filter_all(any_vars(str_detect(.,pattern = "University of Califronia")))
+  filter_all(any_vars(str_detect(., pattern = "University of California")))
+univ_calif
 ```
 
 ```
-## # A tibble: 0 x 10
-## # … with 10 variables: INSTNM <chr>, CITY <chr>, STABBR <chr>, ZIP <chr>,
-## #   ADM_RATE <dbl>, SAT_AVG <dbl>, PCIP26 <dbl>, COSTT4_A <dbl>,
-## #   C150_4_POOLED <dbl>, PFTFTUG1_EF <dbl>
+## # A tibble: 10 x 10
+##    INSTNM CITY  STABBR ZIP   ADM_RATE SAT_AVG PCIP26 COSTT4_A C150_4_POOLED
+##    <chr>  <chr> <chr>  <chr>    <dbl>   <dbl>  <dbl>    <dbl>         <dbl>
+##  1 Unive… La J… CA     92093    0.357    1324  0.216    31043         0.872
+##  2 Unive… Irvi… CA     92697    0.406    1206  0.107    31198         0.876
+##  3 Unive… Rive… CA     92521    0.663    1078  0.149    31494         0.73 
+##  4 Unive… Los … CA     9009…    0.180    1334  0.155    33078         0.911
+##  5 Unive… Davis CA     9561…    0.423    1218  0.198    33904         0.850
+##  6 Unive… Sant… CA     9506…    0.578    1201  0.193    34608         0.776
+##  7 Unive… Berk… CA     94720    0.169    1422  0.105    34924         0.916
+##  8 Unive… Sant… CA     93106    0.358    1281  0.108    34998         0.816
+##  9 Unive… San … CA     9410…   NA          NA NA           NA        NA    
+## 10 Unive… San … CA     9414…   NA          NA NA           NA        NA    
+## # … with 1 more variable: PFTFTUG1_EF <dbl>
 ```
-
+##These data are not tidy if all UCs are considered one university.
 
 10. Use `separate()` to separate institution name into two new columns "UNIV" and "CAMPUS".
 
+```r
+university_ca <- 
+  univ_calif %>% 
+  separate(INSTNM, c("UNIV", "CAMPUS"), sep="-")
+university_ca
+```
+
+```
+## # A tibble: 10 x 11
+##    UNIV  CAMPUS CITY  STABBR ZIP   ADM_RATE SAT_AVG PCIP26 COSTT4_A
+##    <chr> <chr>  <chr> <chr>  <chr>    <dbl>   <dbl>  <dbl>    <dbl>
+##  1 Univ… San D… La J… CA     92093    0.357    1324  0.216    31043
+##  2 Univ… Irvine Irvi… CA     92697    0.406    1206  0.107    31198
+##  3 Univ… River… Rive… CA     92521    0.663    1078  0.149    31494
+##  4 Univ… Los A… Los … CA     9009…    0.180    1334  0.155    33078
+##  5 Univ… Davis  Davis CA     9561…    0.423    1218  0.198    33904
+##  6 Univ… Santa… Sant… CA     9506…    0.578    1201  0.193    34608
+##  7 Univ… Berke… Berk… CA     94720    0.169    1422  0.105    34924
+##  8 Univ… Santa… Sant… CA     93106    0.358    1281  0.108    34998
+##  9 Univ… Hasti… San … CA     9410…   NA          NA NA           NA
+## 10 Univ… San F… San … CA     9414…   NA          NA NA           NA
+## # … with 2 more variables: C150_4_POOLED <dbl>, PFTFTUG1_EF <dbl>
+```
 
 
 11. As a final step, remove `Hastings College of Law` and `UC San Francisco` and store the final data frame as a new object `univ_calif_final`.
 
+```r
+univ_calif_final <- 
+  university_ca %>% 
+  filter(CAMPUS !="Hastings College of Law", CAMPUS !="San Francisco")
+univ_calif_final
+```
+
+```
+## # A tibble: 8 x 11
+##   UNIV  CAMPUS CITY  STABBR ZIP   ADM_RATE SAT_AVG PCIP26 COSTT4_A
+##   <chr> <chr>  <chr> <chr>  <chr>    <dbl>   <dbl>  <dbl>    <dbl>
+## 1 Univ… San D… La J… CA     92093    0.357    1324  0.216    31043
+## 2 Univ… Irvine Irvi… CA     92697    0.406    1206  0.107    31198
+## 3 Univ… River… Rive… CA     92521    0.663    1078  0.149    31494
+## 4 Univ… Los A… Los … CA     9009…    0.180    1334  0.155    33078
+## 5 Univ… Davis  Davis CA     9561…    0.423    1218  0.198    33904
+## 6 Univ… Santa… Sant… CA     9506…    0.578    1201  0.193    34608
+## 7 Univ… Berke… Berk… CA     94720    0.169    1422  0.105    34924
+## 8 Univ… Santa… Sant… CA     93106    0.358    1281  0.108    34998
+## # … with 2 more variables: C150_4_POOLED <dbl>, PFTFTUG1_EF <dbl>
+```
 
 
 12. The column `ADM_RATE` is the admissions rate by campus. Which UC has the lowest and highest admissions rates? Please use a barplot.
 
+```r
+univ_calif_final %>% 
+  ggplot(aes(CAMPUS, ADM_RATE)) +
+  geom_bar(stat="identity")
+```
 
-
-## Knit Your Output and Post to [GitHub](https://github.com/FRS417-DataScienceBiologists)
+![](midterm_exam_files/figure-html/unnamed-chunk-13-1.png)<!-- -->
+##UC Berkeley has the lowest and UC Riverside has the highest admission rate.
