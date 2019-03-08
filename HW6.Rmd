@@ -1,0 +1,120 @@
+---
+title: "HW6"
+author: "Devan Becker"
+date: "3/7/2019"
+output: 
+  html_document: 
+    keep_md: yes
+---
+```{r}
+library(tidyverse)
+```
+
+```{r}
+library(skimr)
+```
+
+```{r}
+library("RColorBrewer")
+```
+
+```{r}
+library(gapminder)
+```
+
+```{r}
+gapminder <-
+  gapminder::gapminder
+```
+
+1. Explore the data using the various function you have learned. Is it tidy, are there any NA’s, what are its dimensions, what are the column names, etc.
+```{r}
+gapminder
+```
+##Data is Tidy.
+```{r}
+glimpse(gapminder)
+```
+
+```{r}
+gapminder %>% 
+  skimr::skim()
+```
+
+```{r}
+gapminder %>% 
+  summarize(number_nas= sum(is.na(gapminder)))
+```
+##No NA's.
+```{r}
+colnames(gapminder)
+```
+
+2. We are interested in the relationship between per capita GDP and life expectancy; i.e. does having more money help you live longer on average. Make a quick plot below to visualize this relationship.
+```{r}
+gapminder %>% 
+  ggplot(aes(lifeExp, gdpPercap)) +
+  geom_point() +
+  scale_y_log10()
+```
+##More money equals longer life expectancy.
+3. There is extreme disparity in per capita GDP. Rescale the x axis to make this easier to interpret. How would you characterize the relationship?
+```{r}
+gapminder %>% 
+  ggplot(aes(lifeExp, gdpPercap)) +
+  geom_point() +
+  scale_y_log10() +
+  geom_smooth(method = lm, se = TRUE)
+```
+##There is a strong positive relationship between GDP per capita and life expextancy.
+
+4. This should look pretty dense to you with significant overplotting. Try using a faceting approach to break this relationship down by year.
+```{r}
+gapminder %>% 
+  ggplot(aes(lifeExp, gdpPercap)) +
+  geom_point(size = 0.3) +
+  scale_y_log10() +
+  geom_smooth(method = lm, se = TRUE) +
+  facet_grid(~year)
+```
+
+
+5. Simplify the comparison by comparing only 1952 and 2007. Can you come to any conclusions?
+```{r}
+gapminder %>% 
+  filter(year==1952 | year==2007) %>% 
+  ggplot(aes(lifeExp, gdpPercap)) +
+  geom_point(size = 0.8) +
+  scale_y_log10() +
+  geom_smooth(method = lm, se = TRUE) +
+  facet_grid(~year)
+```
+
+6. Let’s stick with the 1952 and 2007 comparison but make some aesthetic adjustments. First try to color by continent and adjust the size of the points by population. Add + scale_size(range = c(0.1, 10), guide = "none") as a layer to clean things up a bit.
+```{r}
+gapminder %>% 
+  filter(year==1952 | year==2007) %>% 
+  ggplot(aes(lifeExp, gdpPercap, color = continent, size = pop)) +
+  geom_point() +
+  scale_y_log10() +
+  facet_grid(~year) +
+  scale_size(range = c(0.1, 10), guide = "none")
+```
+
+7. Although we did not introduce them in lab, ggplot has a number of built-in themes that make things easier. I like the light theme for these data, but you can see lots of options. Apply one of these to your plot above.
+```{r}
+library("RColorBrewer")
+```
+
+```{r}
+gapminder %>% 
+  filter(year==1952 | year==2007) %>% 
+  ggplot(aes(lifeExp, gdpPercap, color = continent, size = pop)) +
+  geom_point() +
+  scale_y_log10() +
+  facet_grid(~year) +
+  scale_size(range = c(0.1, 10), guide = "none") +
+  scale_colour_brewer(palette = "BrBG")
+```
+
+
