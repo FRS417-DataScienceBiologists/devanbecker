@@ -22,7 +22,7 @@ library(tidyverse)
 ```
 
 ```
-## ── Attaching packages ─────────────────────────────────────── tidyverse 1.2.1 ──
+## ── Attaching packages ─────────────────────────────────────────────────────────────────────────────── tidyverse 1.2.1 ──
 ```
 
 ```
@@ -33,7 +33,7 @@ library(tidyverse)
 ```
 
 ```
-## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+## ── Conflicts ────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
 ## ✖ dplyr::filter() masks stats::filter()
 ## ✖ dplyr::lag()    masks stats::lag()
 ```
@@ -42,7 +42,7 @@ library(tidyverse)
 
 ```r
 colleges <-
-  readr::read_csv("ca_college_data.csv", na = c(""," ", "NA","#N/A", "-999"))
+  readr::read_csv("data/ca_college_data.csv", na = c(""," ", "NA","#N/A", "-999"))
 ```
 
 ```
