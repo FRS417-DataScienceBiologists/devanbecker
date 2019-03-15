@@ -17,7 +17,7 @@ We will work together on the next part (time permitting) and this will end up be
 Aren't mammals fun? Let's load up some more mammal data. This will be life history data for mammals. The [data](http://esapubs.org/archive/ecol/E084/093/) are from: *S. K. Morgan Ernest. 2003. Life history characteristics of placental non-volant mammals. Ecology 84:3402.*  
 
 ```{r}
-life_history <- readr::read_csv("mammal_lifehistories_v2.csv")
+life_history <- readr::read_csv("data/mammal_lifehistories_v2.csv")
 ```
 
 Rename some of the variables. Notice that I am replacing the old `life_history` data.
@@ -50,11 +50,13 @@ life_history %>%
 life_history %>% 
   summarize(total = n())
 ```
+
 ```{r}
 life_history <- 
   life_history %>% 
   na_if(-999.0)
 ```
+
 ```{r}
 life_history %>% 
   skimr::skim()

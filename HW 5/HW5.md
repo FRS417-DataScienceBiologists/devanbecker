@@ -17,7 +17,7 @@ library(tidyverse)
 ```
 
 ```
-## ── Attaching packages ─────────────────────────────────────── tidyverse 1.2.1 ──
+## ── Attaching packages ─────────────────────────────────────────────────────────────────────────────── tidyverse 1.2.1 ──
 ```
 
 ```
@@ -28,7 +28,7 @@ library(tidyverse)
 ```
 
 ```
-## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+## ── Conflicts ────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
 ## ✖ dplyr::filter() masks stats::filter()
 ## ✖ dplyr::lag()    masks stats::lag()
 ```
@@ -38,7 +38,7 @@ Let's revisit the mammal life history data to practice our `ggplot` skills. Some
 1. Load the data.
 
 ```r
-life_history <- readr::read_csv("mammal_lifehistories_v2.csv")
+life_history <- readr::read_csv("data/mammal_lifehistories_v2.csv")
 ```
 
 ```

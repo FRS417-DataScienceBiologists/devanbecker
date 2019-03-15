@@ -109,6 +109,7 @@ colleges %>%
 ## 1        949
 ```
 
+
 ```r
 colleges %>% 
   purrr::map_df(~ sum(is.na(.))) %>% 

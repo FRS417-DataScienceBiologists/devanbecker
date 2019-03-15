@@ -13,7 +13,7 @@ library(tidyverse)
 ```
 
 ```
-## ── Attaching packages ─────────────────────────────────────── tidyverse 1.2.1 ──
+## ── Attaching packages ─────────────────────────────────────────────────────────────────────────────── tidyverse 1.2.1 ──
 ```
 
 ```
@@ -24,7 +24,7 @@ library(tidyverse)
 ```
 
 ```
-## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+## ── Conflicts ────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
 ## ✖ dplyr::filter() masks stats::filter()
 ## ✖ dplyr::lag()    masks stats::lag()
 ```
@@ -36,7 +36,7 @@ Aren't mammals fun? Let's load up some more mammal data. This will be life histo
 
 
 ```r
-life_history <- readr::read_csv("mammal_lifehistories_v2.csv")
+life_history <- readr::read_csv("data/mammal_lifehistories_v2.csv")
 ```
 
 ```
@@ -93,14 +93,14 @@ life_history %>%
 ##  n obs: 1440 
 ##  n variables: 13 
 ## 
-## ── Variable type:character ─────────────────────────────────────────────────────
+## ── Variable type:character ─────────────────────────────────────────────────────────────────────────────────────────────
 ##  variable missing complete    n min max empty n_unique
 ##    family       0     1440 1440   6  15     0       96
 ##     genus       0     1440 1440   3  16     0      618
 ##     order       0     1440 1440   7  14     0       17
 ##   species       0     1440 1440   3  17     0     1191
 ## 
-## ── Variable type:numeric ───────────────────────────────────────────────────────
+## ── Variable type:numeric ───────────────────────────────────────────────────────────────────────────────────────────────
 ##     variable missing complete    n      mean         sd   p0  p25     p50
 ##          AFR       0     1440 1440   -408.12     504.97 -999 -999    2.5 
 ##    gestation       0     1440 1440   -287.25     455.36 -999 -999    1.05
@@ -154,11 +154,13 @@ life_history %>%
 ## 1  1440
 ```
 
+
 ```r
 life_history <- 
   life_history %>% 
   na_if(-999.0)
 ```
+
 
 ```r
 life_history %>% 
@@ -170,14 +172,14 @@ life_history %>%
 ##  n obs: 1440 
 ##  n variables: 13 
 ## 
-## ── Variable type:character ─────────────────────────────────────────────────────
+## ── Variable type:character ─────────────────────────────────────────────────────────────────────────────────────────────
 ##  variable missing complete    n min max empty n_unique
 ##    family       0     1440 1440   6  15     0       96
 ##     genus       0     1440 1440   3  16     0      618
 ##     order       0     1440 1440   7  14     0       17
 ##   species       0     1440 1440   3  17     0     1191
 ## 
-## ── Variable type:numeric ───────────────────────────────────────────────────────
+## ── Variable type:numeric ───────────────────────────────────────────────────────────────────────────────────────────────
 ##     variable missing complete    n      mean         sd    p0   p25    p50
 ##          AFR     607      833 1440     22.44      26.45  0.7   4.5   12   
 ##    gestation     418     1022 1440      3.86       3.62  0.49  0.99   2.11

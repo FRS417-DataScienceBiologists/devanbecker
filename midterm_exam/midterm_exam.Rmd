@@ -42,6 +42,7 @@ colnames(colleges)
 colleges %>% 
   summarize(number_nas= sum(is.na(colleges)))
 ```
+
 ```{r}
 colleges %>% 
   purrr::map_df(~ sum(is.na(.))) %>% 
