@@ -44,6 +44,7 @@ names(roulette) <- days
 total_blackjack <- sum(blackjack)
 total_blackjack
 ```
+
 ```{r}
 total_roulette <- sum(roulette)
 total_roulette

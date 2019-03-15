@@ -11,7 +11,7 @@ library("tidyverse")
 ```
 
 ```
-## ── Attaching packages ──────────────────────────────────────────────────────────────────────────────── tidyverse 1.2.1 ──
+## ── Attaching packages ─────────────────────────────────────────────────────────────────────────────── tidyverse 1.2.1 ──
 ```
 
 ```
@@ -22,7 +22,7 @@ library("tidyverse")
 ```
 
 ```
-## ── Conflicts ─────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
+## ── Conflicts ────────────────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
 ## ✖ dplyr::filter() masks stats::filter()
 ## ✖ dplyr::lag()    masks stats::lag()
 ```
@@ -33,7 +33,7 @@ getwd()
 ```
 
 ```
-## [1] "/Users/devanbecker/Desktop/FRS417"
+## [1] "/Users/devanbecker/Desktop/devanbecker/HW 1"
 ```
 
 
@@ -94,6 +94,7 @@ total_blackjack
 ```
 ## [1] 310
 ```
+
 
 ```r
 total_roulette <- sum(roulette)
