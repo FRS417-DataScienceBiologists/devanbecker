@@ -9,12 +9,15 @@ output:
 ```{r}
 library("tidyverse")
 ```
+
 ```{r}
 msleep
 ```
+
 ```{r}
 ?msleep
 ```
+
 ```{r}
 dim(msleep)
 ```
