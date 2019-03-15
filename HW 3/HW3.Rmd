@@ -12,13 +12,14 @@ library(tidyverse)
 ```
 
 ```{r}
-fisheries <- readr::read_csv(file = "FAO_1950to2012_111914.csv")
+fisheries <- readr::read_csv(file = "data/FAO_1950to2012_111914.csv")
 ```
 
 ```{r}
 names(fisheries) = make.names(names(fisheries), unique = T)
 names(fisheries)
 ```
+
 ```{r}
 fisheries
 ```
@@ -35,6 +36,7 @@ fisheries <- fisheries %>%
          unit = Measure..Measure.)
 fisheries
 ```
+
 ```{r}
 fisheries_tidy <- fisheries %>% 
   gather(num_range("X",1950:2012), key="year", value="catch")
@@ -60,6 +62,7 @@ fisheries_tidy %>%
   filter(year==2012, spgroupname=="Squids, cuttlefishes, octopuses") %>% 
   arrange(desc(catch))
 ```
+
 ```{r}
 cuttlefish <- 
   fisheries_tidy %>% 
